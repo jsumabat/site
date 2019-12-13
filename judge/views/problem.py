@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.db import transaction
 from django.db.models import Count, F, Prefetch, Q
 from django.db.utils import ProgrammingError
-from django.http import Http404, HttpResponse, HttpResponseForbidden, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import get_template
 from django.urls import reverse
@@ -534,7 +534,7 @@ def problem_submit(request, problem=None, submission=None):
         if form.is_valid():
             if (not request.user.has_perm('judge.spam_submission') and
                     Submission.objects.filter(user=profile, was_rejudged=False)
-                              .exclude(status__in=['D', 'IE', 'CE', 'AB']).count() > 2):
+                              .exclude(status__in=['D', 'IE', 'CE', 'AB']).count() >= settings.DMOJ_SUBMISSION_LIMIT):
                 return HttpResponse('<h1>You submitted too many submissions.</h1>', status=429)
             if not form.cleaned_data['problem'].allowed_languages.filter(
                     id=form.cleaned_data['language'].id).exists():
@@ -584,6 +584,9 @@ def problem_submit(request, problem=None, submission=None):
             form_data = form.cleaned_data
             if submission is not None:
                 sub = get_object_or_404(Submission, id=int(submission))
+
+            if 'problem' not in form_data:
+                return HttpResponseBadRequest()
     else:
         initial = {'language': profile.language}
         if problem is not None:
