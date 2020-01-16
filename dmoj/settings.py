@@ -109,7 +109,7 @@ TIMEZONE_MAP = None
 TIMEZONE_DETECT_BACKEND = None
 
 TERMS_OF_SERVICE_URL = None
-DEFAULT_USER_LANGUAGE = 'PY2'
+DEFAULT_USER_LANGUAGE = 'PY3'
 
 PHANTOMJS = ''
 PHANTOMJS_PDF_ZOOM = 0.75
@@ -127,7 +127,7 @@ PUPPETEER_PAPER_SIZE = 'Letter'
 PYGMENT_THEME = 'pygment-github.css'
 INLINE_JQUERY = True
 INLINE_FONTAWESOME = True
-JQUERY_JS = '//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'
+JQUERY_JS = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'
 FONTAWESOME_CSS = '//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'
 DMOJ_CANONICAL = ''
 
